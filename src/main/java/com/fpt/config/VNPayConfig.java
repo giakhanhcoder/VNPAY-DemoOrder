@@ -1,4 +1,4 @@
-package com.fpt.Config;
+package com.fpt.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;

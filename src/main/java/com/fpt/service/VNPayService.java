@@ -1,5 +1,6 @@
-package com.fpt.Config;
+package com.fpt.service;
 
+import com.fpt.config.VNPayConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.*;
 public class VNPayService {
 
     public String createOrder(int total, String orderInfor, String urlReturn){
+        //Các bạn có thể tham khảo tài liệu hướng dẫn và điều chỉnh các tham số
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
@@ -104,6 +106,7 @@ public class VNPayService {
         if (fields.containsKey("vnp_SecureHash")) {
             fields.remove("vnp_SecureHash");
         }
+
         String signValue = VNPayConfig.hashAllFields(fields);
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {

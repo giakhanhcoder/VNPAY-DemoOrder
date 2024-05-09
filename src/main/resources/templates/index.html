@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-        <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-        <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <title>Thanh toán</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Tạo đơn hàng</title>
 </head>
 
 <body>
@@ -19,7 +15,7 @@
             <div class="card">
                 <div class="card-body">
                     <img th:src="@{/vnpay-logo.png}" style="width: 200px">
-                    <h2 class="card-title">Thanh Toán Đơn Hàng</h2>
+                    <h2 class="card-title">Tạo Đơn Hàng</h2>
                     <form th:action="@{/submitOrder}" method="post">
                         <div class="form-group">
                             <label for="amount">Số tiền:</label>
@@ -42,9 +38,4 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
-</html></title>
-</head>
-<body>
-
-</body>
 </html>

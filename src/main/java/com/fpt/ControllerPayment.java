@@ -1,15 +1,16 @@
 package com.fpt;
 
-import com.fpt.Config.VNPayService;
+import com.fpt.service.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@org.springframework.stereotype.Controller
-public class Controller {
+@Controller
+public class ControllerPayment {
     @Autowired
     private VNPayService vnPayService;
 
@@ -18,7 +19,7 @@ public class Controller {
     public String home(){
         return "index";
     }
-
+    // Chuyển hướng người dùng đến cổng thanh toán VNPAY
     @PostMapping("/submitOrder")
     public String submitOrder(@RequestParam("amount") int orderTotal,
                               @RequestParam("orderInfo") String orderInfo,
@@ -28,6 +29,7 @@ public class Controller {
         return "redirect:" + vnpayUrl;
     }
 
+    // Sau khi hoàn tất thanh toán, VNPAY sẽ chuyển hướng trình duyệt về URL này
     @GetMapping("/vnpay-payment")
     public String GetMapping(HttpServletRequest request, Model model){
         int paymentStatus =vnPayService.orderReturn(request);
