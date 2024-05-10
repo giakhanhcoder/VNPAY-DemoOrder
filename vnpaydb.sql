@@ -8,28 +8,19 @@ CREATE TABLE product (
     product_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     product_name VARCHAR(255),
     description VARCHAR(255),
-    price VARCHAR(255),
-    quantity VARCHAR(255)
-);
-
-CREATE TABLE payment_details (
-    payment_detail_id VARCHAR(255) PRIMARY KEY,
-    amount INT,
-    paymentMethod VARCHAR(255),
-    provider VARCHAR(255),
-    create_at DATETIME
+    price int,
+    quantity int
 );
 
 CREATE TABLE orders (
     order_id VARCHAR(36) PRIMARY KEY,
-     payment_detail_id VARCHAR(255) ,
     user_id VARCHAR(36),
-    total_price double,
+    total_price int,
     status VARCHAR(255),
-    create_at VARCHAR(255),
-    received_at VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
-    FOREIGN KEY (payment_detail_id) REFERENCES payment_details(payment_detail_id)
+    create_at DATETIME(6),
+    received_at DATETIME(6),
+    payment_method VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
 
@@ -42,3 +33,6 @@ CREATE TABLE order_details (
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
+
+insert into user(user_id ,user_name)
+values(1, "Vu Gia Khanh")

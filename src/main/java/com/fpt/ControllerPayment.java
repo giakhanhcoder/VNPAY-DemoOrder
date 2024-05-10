@@ -21,11 +21,10 @@ public class ControllerPayment {
     }
     // Chuyển hướng người dùng đến cổng thanh toán VNPAY
     @PostMapping("/submitOrder")
-    public String submitOrder(@RequestParam("amount") int orderTotal,
-                              @RequestParam("orderInfo") String orderInfo,
+    public String submitOrder(@RequestParam("totalPrice") int totalPrice,
                               HttpServletRequest request){
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
+        String vnpayUrl = vnPayService.createOrder(totalPrice, baseUrl);
         return "redirect:" + vnpayUrl;
     }
 

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, String> {
+    Orders findByUserAndOrderId(User user, String orderId);
 }

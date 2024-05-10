@@ -1,7 +1,12 @@
 package com.fpt.service;
 
+import com.fpt.Repository.OrdersRepository;
+import com.fpt.Repository.UserRepository;
 import com.fpt.config.VNPayConfig;
+import com.fpt.model.Orders;
+import com.fpt.model.User;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -11,9 +16,26 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class VNPayService {
 
-    public String createOrder(int total, String orderInfor, String urlReturn){
+    private final UserRepository userRepository;
+    private final OrdersRepository ordersRepository;
+
+
+    public String createOrder(int total, String urlReturn) {
+        // tạo tạm 1 user để lưu trong order
+        User user = userRepository.findByUserName("Vu Gia Khanh");
+        // tạo 1 order
+        Orders orders = new Orders();
+        orders.setUser(user);
+        orders.setTotalPrice(total);
+        orders.setCreatAt(new Date());
+        orders.setReceivedAt(new Date());
+        orders.setPaymentMethod("VNPAY");
+
+        Orders o = ordersRepository.save(orders);
+
         //Các bạn có thể tham khảo tài liệu hướng dẫn và điều chỉnh các tham số
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
@@ -26,11 +48,11 @@ public class VNPayService {
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", String.valueOf(total*100));
+        vnp_Params.put("vnp_Amount", String.valueOf(total * 100));
         vnp_Params.put("vnp_CurrCode", "VND");
 
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", orderInfor);
+        vnp_Params.put("vnp_OrderInfo", o.getOrderId());
         vnp_Params.put("vnp_OrderType", orderType);
 
         String locate = "vn";
@@ -83,9 +105,9 @@ public class VNPayService {
         return paymentUrl;
     }
 
-    public int orderReturn(HttpServletRequest request){
+    public int orderReturn(HttpServletRequest request) {
         Map fields = new HashMap();
-        for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
+        for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
             String fieldName = null;
             String fieldValue = null;
             try {
@@ -108,13 +130,22 @@ public class VNPayService {
         }
 
         String signValue = VNPayConfig.hashAllFields(fields);
+        User user = userRepository.findByUserName("Vu Gia Khanh");
+        String orderInfo = request.getParameter("vnp_OrderInfo");
+        Orders order = ordersRepository.findByUserAndOrderId(user, orderInfo);
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
+                order.setStatus("Success");
+                ordersRepository.save(order);
                 return 1;
             } else {
+                order.setStatus("Fail");
+                ordersRepository.save(order);
                 return 0;
             }
         } else {
+            order.setStatus("Fail");
+            ordersRepository.save(order);
             return -1;
         }
     }

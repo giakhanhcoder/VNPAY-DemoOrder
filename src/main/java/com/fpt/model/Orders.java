@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -23,24 +25,22 @@ public class Orders {
     private String orderId;
 
     @Column(name = "total_price")
-    private double totalPrice;
+    private int totalPrice;
 
     @Column(name = "status")
     private String status;
 
     @Column(name = "create_at")
-    private String creatAt;
+    private Date creatAt;
 
     @Column(name = "received_at")
-    private String receivedAt;
+    private Date receivedAt;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
 
     @OneToMany(mappedBy = "orders")
     private List<OrderDetails> orderDetails;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_detail_id")
-    @MapsId
-    private PaymentDetails paymentDetails;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -28,10 +28,10 @@ public class Product {
     private String description;
 
     @Column(name = "price")
-    private String price;
+    private int price;
 
     @Column(name = "quantity")
-    private String quantity;
+    private int quantity;
 
     @OneToMany(mappedBy = "product")
     private List<OrderDetails> orderDetails;
