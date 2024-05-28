@@ -18,7 +18,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      - run: mvn -f pom.xml clean test
+      - run: mvn -f pom.xml clean test -e -X
 
 
   build:
