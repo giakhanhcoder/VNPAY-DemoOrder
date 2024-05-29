@@ -54,4 +54,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_NAME: vnpaydb
+          DB_USER: giakhanh
+          DB_PASSWORD: giakhanh123
         run: mvn clean install
