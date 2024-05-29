@@ -7,47 +7,6 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8.0
-        ports:
-          - 3306:3306
-        options: >
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: vnpaydb
-          MYSQL_USER: giakhanh
-          MYSQL_PASSWORD: giakhanh123
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup JDK 21
-        uses: actions/setup-java@v4.2.1
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
-      - name: Wait for MySQL
-        run: |
-          # Wait until MySQL is ready
-          while ! mysqladmin ping -h "127.0.0.1" --silent; do
-            sleep 1
-          done
-      - name: Run unit tests on Java
-        env:
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_NAME: vnpaydb
-          DB_USER: giakhanh
-          DB_PASSWORD: giakhanh123
-        run: mvn -f pom.xml clean test
-
   build:
     runs-on: ubuntu-latest
     services:
@@ -88,3 +47,6 @@ jobs:
           DB_USER: giakhanh
           DB_PASSWORD: giakhanh123
         run: mvn clean install
+
+
+
