@@ -19,10 +19,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - run: mvn -f pom.xml clean test -e -X
-        env:
-          DB_URL: jdbc:mysql://localhost:3306/vnpaydb
-          DB_USERNAME: giakhanh
-          DB_PASSWORD: giakhanh123
+
 
   build:
     runs-on: ubuntu-latest
@@ -36,7 +33,4 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn clean install
-        env:
-          DB_URL: jdbc:mysql://localhost:3306/vnpaydb
-          DB_USERNAME: giakhanh
-          DB_PASSWORD: giakhanh123
+
